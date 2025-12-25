@@ -1,2 +1,2 @@
 # DSA
-Solution of the important DSA problem for the SDE.
+Solution of the important DSA problems for the SDE.
