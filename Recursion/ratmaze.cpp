@@ -2,29 +2,29 @@
 #include<vector>
 using namespace std;
 
-void helper(vector<vector<int>>&mat,int r, int c, string path, vector<string>&ans,vector<vector<bool>>&vis){
+void helper(vector<vector<int>>&mat,int r, int c, string path, vector<string>&ans){
     int n=mat.size();
-    if(r<0 || c<0 || r>=n || c>=n ||mat[r][c]==0 || vis[r][c]==true){
+    if(r<0 || c<0 || r>=n || c>=n ||mat[r][c]==0 || mat[r][c]==-1){
         return;
     }
     if(r==n-1&&c==n-1){
         ans.push_back(path);
         return;
     }
-    vis[r][c]=true;
-    helper(mat,r+1,c,path+"D",ans,vis);
-    helper(mat,r-1,c,path+"U",ans,vis);
-    helper(mat,r,c+1,path+"R",ans,vis);
-    helper(mat,r,c-1,path+"L",ans,vis);
-    vis[r][c]=false;
+    mat[r][c]=-1;
+    helper(mat,r+1,c,path+"D",ans);
+    helper(mat,r-1,c,path+"U",ans);
+    helper(mat,r,c+1,path+"R",ans);
+    helper(mat,r,c-1,path+"L",ans);
+    mat[r][c]=1;
 }
 
 vector<string>findPath(vector<vector<int>>&mat){
     vector<string>ans;
     string path="";
-    int n=mat.size();
-    vector<vector<bool>>vis(n,vector<bool>(n,false));
-    helper(mat,0,0,path,ans,vis);
+    // int n=mat.size();
+    // vector<vector<bool>>vis(n,vector<bool>(n,false));
+    helper(mat,0,0,path,ans);
     return ans;
 
 }
