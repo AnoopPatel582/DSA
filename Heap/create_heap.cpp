@@ -2,25 +2,28 @@
 #include<vector>
 #include<algorithm>
 using namespace std;
-void heapify(vector<int>&arr,int i){
-    int largest=i;
-    int left=2*i+1;
-    int right=2*i+2;
-    if(left<arr.size()&& arr[left]>arr[largest]){
-        largest=left;
+void heapify(vector<int>& arr, int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
     }
-    if(right<arr.size()&& arr[right]>arr[largest]){
-        largest=right;
+
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
     }
-    if(largest!=i){
-        swap(arr[largest],arr[i]);
-        heapify(arr,largest);
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
     }
 }
 void create_heap(vector<int>&arr){
     int n=arr.size();
     for(int i=(n/2)-1;i>=0;i--){
-        heapify(arr,i);
+        heapify(arr,n,i);
     }
 }
 void insertion_heap(vector<int>&arr,int value){
@@ -38,22 +41,24 @@ void insertion_heap(vector<int>&arr,int value){
 
 }
 void deletion_heap(vector<int>&arr){
-    int i=0;
+    if(arr.empty()) return;
+    arr[0]=arr.back();
+    arr.pop_back();
+    if(!arr.empty()){
+        heapify(arr,arr.size(),0);
+    }
+}
+
+void heap_sort(vector<int>&arr){
     int n=arr.size();
-    while(i<(n/2)-1){
-        int left=2*i+1;
-        int right=2*i+2;
-        if(arr[left]>arr[right]){
-            arr[i]=arr[left];
-        }else{
-            arr[i]=arr[right];
-        }
-        i++;
+    for(int i=(n/2)-1;i>=0;i--){
+        heapify(arr,n,i);
     }
-    while(i<n-1){
-        arr[i+1]=arr[i+2];
-        i++;
+    for(int i=n-1;i>0;i--){
+        swap(arr[0],arr[i]);
+        heapify(arr,i,0);
     }
+
 }
 
 int main(){
@@ -80,6 +85,10 @@ int main(){
     cout<<endl;
     deletion_heap(arr);
     cout<<"Array after deletion:";
+    for(int num:arr) cout<<num<<" ";
+    cout<<endl;
+    heap_sort(arr);
+    cout<<"Array after heap sort:";
     for(int num:arr) cout<<num<<" ";
     return 0;
 }
